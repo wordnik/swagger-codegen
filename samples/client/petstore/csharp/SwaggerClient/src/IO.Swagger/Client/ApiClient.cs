@@ -28,6 +28,8 @@ namespace IO.Swagger.Client
     /// </summary>
     public partial class ApiClient
     {
+        private static IO.Swagger.Client.Logger log = new IO.Swagger.Client.Logger("ApiClient");
+
         private JsonSerializerSettings serializerSettings = new JsonSerializerSettings
         {
             ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
@@ -52,6 +54,7 @@ namespace IO.Swagger.Client
         /// </summary>
         public ApiClient()
         {
+            log.Trace("ApiClient ctor without parameters");
             Configuration = IO.Swagger.Client.Configuration.Default;
             RestClient = new RestClient("http://petstore.swagger.io:80/v2");
         }
@@ -63,6 +66,7 @@ namespace IO.Swagger.Client
         /// <param name="config">An instance of Configuration.</param>
         public ApiClient(Configuration config)
         {
+            log.Trace("ApiClient ctor with configuration");
             Configuration = config ?? IO.Swagger.Client.Configuration.Default;
 
             RestClient = new RestClient(Configuration.BasePath);
@@ -75,6 +79,7 @@ namespace IO.Swagger.Client
         /// <param name="basePath">The base path.</param>
         public ApiClient(String basePath = "http://petstore.swagger.io:80/v2")
         {
+           log.Trace("ApiClient ctor with basePath");
            if (String.IsNullOrEmpty(basePath))
                 throw new ArgumentException("basePath cannot be empty");
 
@@ -113,23 +118,36 @@ namespace IO.Swagger.Client
             Dictionary<String, FileParameter> fileParams, Dictionary<String, String> pathParams,
             String contentType)
         {
+            log.Trace("Prepare request start");
             var request = new RestRequest(path, method);
 
             // add path parameter, if any
             foreach(var param in pathParams)
+            {
+                log.Debug("Add path param " + param.Key + " = " + param.Value);
                 request.AddParameter(param.Key, param.Value, ParameterType.UrlSegment);
+            }
 
             // add header parameter, if any
             foreach(var param in headerParams)
+            {
+                log.Debug("Add header param " + param.Key + " = " + param.Value);
                 request.AddHeader(param.Key, param.Value);
+            }
 
             // add query parameter, if any
             foreach(var param in queryParams)
+            {
+                log.Debug("Add query param " + param.Key + " = " + param.Value);
                 request.AddQueryParameter(param.Key, param.Value);
+            }
 
             // add form parameter, if any
             foreach(var param in formParams)
+            {
+                log.Debug("Add form param " + param.Key + " = " + param.Value);
                 request.AddParameter(param.Key, param.Value);
+            }
 
             // add file parameter, if any
             foreach(var param in fileParams)
@@ -141,14 +159,17 @@ namespace IO.Swagger.Client
             {
                 if (postBody.GetType() == typeof(String))
                 {
+                    log.Debug("Request with string body. Length: "+(postBody as string).Length);
                     request.AddParameter("application/json", postBody, ParameterType.RequestBody);
                 }
                 else if (postBody.GetType() == typeof(byte[]))
                 {
+                    log.Debug("Request with bytes body. Length: "+(postBody as byte[]).Length);
                     request.AddParameter(contentType, postBody, ParameterType.RequestBody);
                 }
             }
 
+            log.Trace("PrepareRequest end");
             return request;
         }
 
@@ -171,20 +192,26 @@ namespace IO.Swagger.Client
             Dictionary<String, FileParameter> fileParams, Dictionary<String, String> pathParams,
             String contentType)
         {
+            log.Trace("CallApi start");
             var request = PrepareRequest(
                 path, method, queryParams, postBody, headerParams, formParams, fileParams,
                 pathParams, contentType);
 
             // set timeout
+            log.Debug(string.Format("RestClient timeout: {0}",RestClient.Timeout));
             
             RestClient.Timeout = Configuration.Timeout;
             // set user agent
             RestClient.UserAgent = Configuration.UserAgent;
+            log.Debug("UserAgent: "+ RestClient.UserAgent);
 
             InterceptRequest(request);
+            log.Debug("Executing request");
             var response = RestClient.Execute(request);
+            log.Info("API was called and response was received");
             InterceptResponse(request, response);
 
+            log.Trace("CallApi end");
             return (Object) response;
         }
         /// <summary>
@@ -206,12 +233,15 @@ namespace IO.Swagger.Client
             Dictionary<String, FileParameter> fileParams, Dictionary<String, String> pathParams,
             String contentType)
         {
+            log.Trace("CallApi start async");
             var request = PrepareRequest(
                 path, method, queryParams, postBody, headerParams, formParams, fileParams,
                 pathParams, contentType);
             InterceptRequest(request);
             var response = await RestClient.ExecuteTaskAsync(request);
+            log.Info("API was called with async and response was received");
             InterceptResponse(request, response);
+            log.Trace("CallApi async end");
             return (Object)response;
         }
 
@@ -222,7 +252,9 @@ namespace IO.Swagger.Client
         /// <returns>Escaped string.</returns>
         public string EscapeString(string str)
         {
-            return UrlEncode(str);
+            string encodedString = UrlEncode(str);
+            log.Debug(string.Format("string was encoded to {0}", encodedString));
+            return encodedString;
         }
 
         /// <summary>
@@ -283,9 +315,11 @@ namespace IO.Swagger.Client
         /// <returns>Object representation of the JSON string.</returns>
         public object Deserialize(IRestResponse response, Type type)
         {
+            log.Trace("Deserialize response start");
             IList<Parameter> headers = response.Headers;
             if (type == typeof(byte[])) // return byte array
             {
+                log.Trace("return RawBytes");
                 return response.RawBytes;
             }
 
@@ -310,26 +344,32 @@ namespace IO.Swagger.Client
                     }
                 }
                 var stream = new MemoryStream(response.RawBytes);
+                log.Trace("return stream");
                 return stream;
             }
 
             if (type.Name.StartsWith("System.Nullable`1[[System.DateTime")) // return a datetime object
             {
+                log.Trace("return nullable DateTime");
                 return DateTime.Parse(response.Content,  null, System.Globalization.DateTimeStyles.RoundtripKind);
             }
 
             if (type == typeof(String) || type.Name.StartsWith("System.Nullable")) // return primitive type
             {
+                log.Trace("return string");
                 return ConvertType(response.Content, type);
             }
 
             // at this point, it must be a model (json)
             try
             {
-                return JsonConvert.DeserializeObject(response.Content, type, serializerSettings);
+                var respObj = JsonConvert.DeserializeObject(response.Content, type, serializerSettings);
+                log.Debug(string.Format("return response deserialized to type {0}", type.Name));
+                return respObj;
             }
             catch (Exception e)
             {
+                log.Error(e, string.Format("Cannot deserialize response to type {0}", type.Name));
                 throw new ApiException(500, e.Message);
             }
         }
@@ -347,6 +387,7 @@ namespace IO.Swagger.Client
             }
             catch (Exception e)
             {
+                log.Error(e, "Cannot serialize object");
                 throw new ApiException(500, e.Message);
             }
         }
@@ -461,7 +502,9 @@ namespace IO.Swagger.Client
                 index += subString.Length;
             }
 
-            return sb.ToString();
+            string url = sb.ToString();
+            log.Debug(string.Format("Encoded url: {0}", url));
+            return url;
         }
 
         /// <summary>

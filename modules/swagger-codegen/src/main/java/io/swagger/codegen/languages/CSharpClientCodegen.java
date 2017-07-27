@@ -313,6 +313,8 @@ public class CSharpClientCodegen extends AbstractCSharpCodegen {
                 clientPackageDir, "ApiResponse.cs"));
         supportingFiles.add(new SupportingFile("ExceptionFactory.mustache",
                 clientPackageDir, "ExceptionFactory.cs"));
+        supportingFiles.add(new SupportingFile("Logger.mustache",
+                clientPackageDir, "Logger.cs"));
         supportingFiles.add(new SupportingFile("SwaggerDateConverter.mustache",
                 clientPackageDir, "SwaggerDateConverter.cs"));
 

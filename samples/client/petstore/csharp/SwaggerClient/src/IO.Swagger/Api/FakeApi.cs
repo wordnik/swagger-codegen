@@ -454,6 +454,7 @@ namespace IO.Swagger.Api
     /// </summary>
     public partial class FakeApi : IFakeApi
     {
+        private static IO.Swagger.Client.Logger log = new IO.Swagger.Client.Logger("FakeApi");
         private IO.Swagger.Client.ExceptionFactory _exceptionFactory = (name, response) => null;
 
         /// <summary>
@@ -462,6 +463,8 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public FakeApi(String basePath)
         {
+            log.Trace("FakeApi ctor with base path");
+            log.Debug(string.Format("Base API path: {0}", basePath));
             this.Configuration = new Configuration { BasePath = basePath };
 
             ExceptionFactory = IO.Swagger.Client.Configuration.DefaultExceptionFactory;
@@ -475,6 +478,7 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public FakeApi(Configuration configuration = null)
         {
+            log.Trace("FakeApi ctor with configuration object");
             if (configuration == null) // use the default one in Configuration
                 this.Configuration = Configuration.Default;
             else
@@ -517,6 +521,7 @@ namespace IO.Swagger.Api
             {
                 if (_exceptionFactory != null && _exceptionFactory.GetInvocationList().Length > 1)
                 {
+                    log.Error("Multicast delegate for ExceptionFactory is unsupported.");
                     throw new InvalidOperationException("Multicast delegate for ExceptionFactory is unsupported.");
                 }
                 return _exceptionFactory;
@@ -554,9 +559,11 @@ namespace IO.Swagger.Api
         /// <returns>OuterBoolean</returns>
         public OuterBoolean FakeOuterBooleanSerialize (OuterBoolean body = null)
         {
-             ApiResponse<OuterBoolean> localVarResponse = FakeOuterBooleanSerializeWithHttpInfo(body);
-             return localVarResponse.Data;
-        }
+            log.Trace("FakeOuterBooleanSerialize called");
+            ApiResponse<OuterBoolean> localVarResponse = FakeOuterBooleanSerializeWithHttpInfo(body);
+            log.Trace("return FakeOuterBooleanSerialize response data");
+            return localVarResponse.Data;
+                    }
 
         /// <summary>
         ///  Test serialization of outer boolean types
@@ -566,6 +573,7 @@ namespace IO.Swagger.Api
         /// <returns>ApiResponse of OuterBoolean</returns>
         public ApiResponse< OuterBoolean > FakeOuterBooleanSerializeWithHttpInfo (OuterBoolean body = null)
         {
+            log.Trace("FakeOuterBooleanSerializeWithHttpInfo called");
 
             var localVarPath = "/fake/outer/boolean";
             var localVarPathParams = new Dictionary<String, String>();
@@ -596,20 +604,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("FakeOuterBooleanSerialize", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return response of type OuterBoolean");
             return new ApiResponse<OuterBoolean>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 (OuterBoolean) Configuration.ApiClient.Deserialize(localVarResponse, typeof(OuterBoolean)));
@@ -623,8 +639,10 @@ namespace IO.Swagger.Api
         /// <returns>Task of OuterBoolean</returns>
         public async System.Threading.Tasks.Task<OuterBoolean> FakeOuterBooleanSerializeAsync (OuterBoolean body = null)
         {
-             ApiResponse<OuterBoolean> localVarResponse = await FakeOuterBooleanSerializeAsyncWithHttpInfo(body);
-             return localVarResponse.Data;
+            log.Trace("FakeOuterBooleanSerializeAsync called");
+            ApiResponse<OuterBoolean> localVarResponse = await FakeOuterBooleanSerializeAsyncWithHttpInfo(body);
+            log.Trace("return FakeOuterBooleanSerializeAsync response data");
+            return localVarResponse.Data;
 
         }
 
@@ -636,6 +654,7 @@ namespace IO.Swagger.Api
         /// <returns>Task of ApiResponse (OuterBoolean)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<OuterBoolean>> FakeOuterBooleanSerializeAsyncWithHttpInfo (OuterBoolean body = null)
         {
+            log.Trace("FakeOuterBooleanSerializeWithHttpInfo called");
 
             var localVarPath = "/fake/outer/boolean";
             var localVarPathParams = new Dictionary<String, String>();
@@ -666,20 +685,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API async");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("FakeOuterBooleanSerialize", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return response of type OuterBoolean");
             return new ApiResponse<OuterBoolean>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 (OuterBoolean) Configuration.ApiClient.Deserialize(localVarResponse, typeof(OuterBoolean)));
@@ -693,9 +720,11 @@ namespace IO.Swagger.Api
         /// <returns>OuterComposite</returns>
         public OuterComposite FakeOuterCompositeSerialize (OuterComposite body = null)
         {
-             ApiResponse<OuterComposite> localVarResponse = FakeOuterCompositeSerializeWithHttpInfo(body);
-             return localVarResponse.Data;
-        }
+            log.Trace("FakeOuterCompositeSerialize called");
+            ApiResponse<OuterComposite> localVarResponse = FakeOuterCompositeSerializeWithHttpInfo(body);
+            log.Trace("return FakeOuterCompositeSerialize response data");
+            return localVarResponse.Data;
+                    }
 
         /// <summary>
         ///  Test serialization of object with outer number type
@@ -705,6 +734,7 @@ namespace IO.Swagger.Api
         /// <returns>ApiResponse of OuterComposite</returns>
         public ApiResponse< OuterComposite > FakeOuterCompositeSerializeWithHttpInfo (OuterComposite body = null)
         {
+            log.Trace("FakeOuterCompositeSerializeWithHttpInfo called");
 
             var localVarPath = "/fake/outer/composite";
             var localVarPathParams = new Dictionary<String, String>();
@@ -735,20 +765,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("FakeOuterCompositeSerialize", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return response of type OuterComposite");
             return new ApiResponse<OuterComposite>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 (OuterComposite) Configuration.ApiClient.Deserialize(localVarResponse, typeof(OuterComposite)));
@@ -762,8 +800,10 @@ namespace IO.Swagger.Api
         /// <returns>Task of OuterComposite</returns>
         public async System.Threading.Tasks.Task<OuterComposite> FakeOuterCompositeSerializeAsync (OuterComposite body = null)
         {
-             ApiResponse<OuterComposite> localVarResponse = await FakeOuterCompositeSerializeAsyncWithHttpInfo(body);
-             return localVarResponse.Data;
+            log.Trace("FakeOuterCompositeSerializeAsync called");
+            ApiResponse<OuterComposite> localVarResponse = await FakeOuterCompositeSerializeAsyncWithHttpInfo(body);
+            log.Trace("return FakeOuterCompositeSerializeAsync response data");
+            return localVarResponse.Data;
 
         }
 
@@ -775,6 +815,7 @@ namespace IO.Swagger.Api
         /// <returns>Task of ApiResponse (OuterComposite)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<OuterComposite>> FakeOuterCompositeSerializeAsyncWithHttpInfo (OuterComposite body = null)
         {
+            log.Trace("FakeOuterCompositeSerializeWithHttpInfo called");
 
             var localVarPath = "/fake/outer/composite";
             var localVarPathParams = new Dictionary<String, String>();
@@ -805,20 +846,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API async");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("FakeOuterCompositeSerialize", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return response of type OuterComposite");
             return new ApiResponse<OuterComposite>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 (OuterComposite) Configuration.ApiClient.Deserialize(localVarResponse, typeof(OuterComposite)));
@@ -832,9 +881,11 @@ namespace IO.Swagger.Api
         /// <returns>OuterNumber</returns>
         public OuterNumber FakeOuterNumberSerialize (OuterNumber body = null)
         {
-             ApiResponse<OuterNumber> localVarResponse = FakeOuterNumberSerializeWithHttpInfo(body);
-             return localVarResponse.Data;
-        }
+            log.Trace("FakeOuterNumberSerialize called");
+            ApiResponse<OuterNumber> localVarResponse = FakeOuterNumberSerializeWithHttpInfo(body);
+            log.Trace("return FakeOuterNumberSerialize response data");
+            return localVarResponse.Data;
+                    }
 
         /// <summary>
         ///  Test serialization of outer number types
@@ -844,6 +895,7 @@ namespace IO.Swagger.Api
         /// <returns>ApiResponse of OuterNumber</returns>
         public ApiResponse< OuterNumber > FakeOuterNumberSerializeWithHttpInfo (OuterNumber body = null)
         {
+            log.Trace("FakeOuterNumberSerializeWithHttpInfo called");
 
             var localVarPath = "/fake/outer/number";
             var localVarPathParams = new Dictionary<String, String>();
@@ -874,20 +926,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("FakeOuterNumberSerialize", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return response of type OuterNumber");
             return new ApiResponse<OuterNumber>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 (OuterNumber) Configuration.ApiClient.Deserialize(localVarResponse, typeof(OuterNumber)));
@@ -901,8 +961,10 @@ namespace IO.Swagger.Api
         /// <returns>Task of OuterNumber</returns>
         public async System.Threading.Tasks.Task<OuterNumber> FakeOuterNumberSerializeAsync (OuterNumber body = null)
         {
-             ApiResponse<OuterNumber> localVarResponse = await FakeOuterNumberSerializeAsyncWithHttpInfo(body);
-             return localVarResponse.Data;
+            log.Trace("FakeOuterNumberSerializeAsync called");
+            ApiResponse<OuterNumber> localVarResponse = await FakeOuterNumberSerializeAsyncWithHttpInfo(body);
+            log.Trace("return FakeOuterNumberSerializeAsync response data");
+            return localVarResponse.Data;
 
         }
 
@@ -914,6 +976,7 @@ namespace IO.Swagger.Api
         /// <returns>Task of ApiResponse (OuterNumber)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<OuterNumber>> FakeOuterNumberSerializeAsyncWithHttpInfo (OuterNumber body = null)
         {
+            log.Trace("FakeOuterNumberSerializeWithHttpInfo called");
 
             var localVarPath = "/fake/outer/number";
             var localVarPathParams = new Dictionary<String, String>();
@@ -944,20 +1007,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API async");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("FakeOuterNumberSerialize", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return response of type OuterNumber");
             return new ApiResponse<OuterNumber>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 (OuterNumber) Configuration.ApiClient.Deserialize(localVarResponse, typeof(OuterNumber)));
@@ -971,9 +1042,11 @@ namespace IO.Swagger.Api
         /// <returns>OuterString</returns>
         public OuterString FakeOuterStringSerialize (OuterString body = null)
         {
-             ApiResponse<OuterString> localVarResponse = FakeOuterStringSerializeWithHttpInfo(body);
-             return localVarResponse.Data;
-        }
+            log.Trace("FakeOuterStringSerialize called");
+            ApiResponse<OuterString> localVarResponse = FakeOuterStringSerializeWithHttpInfo(body);
+            log.Trace("return FakeOuterStringSerialize response data");
+            return localVarResponse.Data;
+                    }
 
         /// <summary>
         ///  Test serialization of outer string types
@@ -983,6 +1056,7 @@ namespace IO.Swagger.Api
         /// <returns>ApiResponse of OuterString</returns>
         public ApiResponse< OuterString > FakeOuterStringSerializeWithHttpInfo (OuterString body = null)
         {
+            log.Trace("FakeOuterStringSerializeWithHttpInfo called");
 
             var localVarPath = "/fake/outer/string";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1013,20 +1087,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("FakeOuterStringSerialize", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return response of type OuterString");
             return new ApiResponse<OuterString>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 (OuterString) Configuration.ApiClient.Deserialize(localVarResponse, typeof(OuterString)));
@@ -1040,8 +1122,10 @@ namespace IO.Swagger.Api
         /// <returns>Task of OuterString</returns>
         public async System.Threading.Tasks.Task<OuterString> FakeOuterStringSerializeAsync (OuterString body = null)
         {
-             ApiResponse<OuterString> localVarResponse = await FakeOuterStringSerializeAsyncWithHttpInfo(body);
-             return localVarResponse.Data;
+            log.Trace("FakeOuterStringSerializeAsync called");
+            ApiResponse<OuterString> localVarResponse = await FakeOuterStringSerializeAsyncWithHttpInfo(body);
+            log.Trace("return FakeOuterStringSerializeAsync response data");
+            return localVarResponse.Data;
 
         }
 
@@ -1053,6 +1137,7 @@ namespace IO.Swagger.Api
         /// <returns>Task of ApiResponse (OuterString)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<OuterString>> FakeOuterStringSerializeAsyncWithHttpInfo (OuterString body = null)
         {
+            log.Trace("FakeOuterStringSerializeWithHttpInfo called");
 
             var localVarPath = "/fake/outer/string";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1083,20 +1168,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API async");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("FakeOuterStringSerialize", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return response of type OuterString");
             return new ApiResponse<OuterString>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 (OuterString) Configuration.ApiClient.Deserialize(localVarResponse, typeof(OuterString)));
@@ -1110,9 +1203,11 @@ namespace IO.Swagger.Api
         /// <returns>ModelClient</returns>
         public ModelClient TestClientModel (ModelClient body)
         {
-             ApiResponse<ModelClient> localVarResponse = TestClientModelWithHttpInfo(body);
-             return localVarResponse.Data;
-        }
+            log.Trace("TestClientModel called");
+            ApiResponse<ModelClient> localVarResponse = TestClientModelWithHttpInfo(body);
+            log.Trace("return TestClientModel response data");
+            return localVarResponse.Data;
+                    }
 
         /// <summary>
         /// To test \&quot;client\&quot; model To test \&quot;client\&quot; model
@@ -1122,6 +1217,7 @@ namespace IO.Swagger.Api
         /// <returns>ApiResponse of ModelClient</returns>
         public ApiResponse< ModelClient > TestClientModelWithHttpInfo (ModelClient body)
         {
+            log.Trace("TestClientModelWithHttpInfo called");
             // verify the required parameter 'body' is set
             if (body == null)
                 throw new ApiException(400, "Missing required parameter 'body' when calling FakeApi->TestClientModel");
@@ -1157,20 +1253,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath,
                 Method.PATCH, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("TestClientModel", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return response of type ModelClient");
             return new ApiResponse<ModelClient>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 (ModelClient) Configuration.ApiClient.Deserialize(localVarResponse, typeof(ModelClient)));
@@ -1184,8 +1288,10 @@ namespace IO.Swagger.Api
         /// <returns>Task of ModelClient</returns>
         public async System.Threading.Tasks.Task<ModelClient> TestClientModelAsync (ModelClient body)
         {
-             ApiResponse<ModelClient> localVarResponse = await TestClientModelAsyncWithHttpInfo(body);
-             return localVarResponse.Data;
+            log.Trace("TestClientModelAsync called");
+            ApiResponse<ModelClient> localVarResponse = await TestClientModelAsyncWithHttpInfo(body);
+            log.Trace("return TestClientModelAsync response data");
+            return localVarResponse.Data;
 
         }
 
@@ -1197,6 +1303,7 @@ namespace IO.Swagger.Api
         /// <returns>Task of ApiResponse (ModelClient)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<ModelClient>> TestClientModelAsyncWithHttpInfo (ModelClient body)
         {
+            log.Trace("TestClientModelWithHttpInfo called");
             // verify the required parameter 'body' is set
             if (body == null)
                 throw new ApiException(400, "Missing required parameter 'body' when calling FakeApi->TestClientModel");
@@ -1232,20 +1339,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API async");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.PATCH, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("TestClientModel", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return response of type ModelClient");
             return new ApiResponse<ModelClient>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 (ModelClient) Configuration.ApiClient.Deserialize(localVarResponse, typeof(ModelClient)));
@@ -1272,7 +1387,9 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public void TestEndpointParameters (decimal? number, double? _double, string patternWithoutDelimiter, byte[] _byte, int? integer = null, int? int32 = null, long? int64 = null, float? _float = null, string _string = null, byte[] binary = null, DateTime? date = null, DateTime? dateTime = null, string password = null, string callback = null)
         {
-             TestEndpointParametersWithHttpInfo(number, _double, patternWithoutDelimiter, _byte, integer, int32, int64, _float, _string, binary, date, dateTime, password, callback);
+            log.Trace("TestEndpointParameters called");
+
+            TestEndpointParametersWithHttpInfo(number, _double, patternWithoutDelimiter, _byte, integer, int32, int64, _float, _string, binary, date, dateTime, password, callback);
         }
 
         /// <summary>
@@ -1296,6 +1413,7 @@ namespace IO.Swagger.Api
         /// <returns>ApiResponse of Object(void)</returns>
         public ApiResponse<Object> TestEndpointParametersWithHttpInfo (decimal? number, double? _double, string patternWithoutDelimiter, byte[] _byte, int? integer = null, int? int32 = null, long? int64 = null, float? _float = null, string _string = null, byte[] binary = null, DateTime? date = null, DateTime? dateTime = null, string password = null, string callback = null)
         {
+            log.Trace("TestEndpointParametersWithHttpInfo called");
             // verify the required parameter 'number' is set
             if (number == null)
                 throw new ApiException(400, "Missing required parameter 'number' when calling FakeApi->TestEndpointParameters");
@@ -1348,27 +1466,36 @@ namespace IO.Swagger.Api
             if (password != null) localVarFormParams.Add("password", Configuration.ApiClient.ParameterToString(password)); // form parameter
             if (callback != null) localVarFormParams.Add("callback", Configuration.ApiClient.ParameterToString(callback)); // form parameter
 
+            log.Debug("Headers, params and body created. Adding auth");
             // authentication (http_basic_test) required
             // http basic authentication required
             if (!String.IsNullOrEmpty(Configuration.Username) || !String.IsNullOrEmpty(Configuration.Password))
             {
+                log.Debug("Basic auth");
                 localVarHeaderParams["Authorization"] = "Basic " + ApiClient.Base64Encode(Configuration.Username + ":" + Configuration.Password);
             }
 
 
+            log.Trace("Calling API");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("TestEndpointParameters", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
@@ -1395,7 +1522,8 @@ namespace IO.Swagger.Api
         /// <returns>Task of void</returns>
         public async System.Threading.Tasks.Task TestEndpointParametersAsync (decimal? number, double? _double, string patternWithoutDelimiter, byte[] _byte, int? integer = null, int? int32 = null, long? int64 = null, float? _float = null, string _string = null, byte[] binary = null, DateTime? date = null, DateTime? dateTime = null, string password = null, string callback = null)
         {
-             await TestEndpointParametersAsyncWithHttpInfo(number, _double, patternWithoutDelimiter, _byte, integer, int32, int64, _float, _string, binary, date, dateTime, password, callback);
+            log.Trace("TestEndpointParametersAsync called");
+            await TestEndpointParametersAsyncWithHttpInfo(number, _double, patternWithoutDelimiter, _byte, integer, int32, int64, _float, _string, binary, date, dateTime, password, callback);
 
         }
 
@@ -1420,6 +1548,7 @@ namespace IO.Swagger.Api
         /// <returns>Task of ApiResponse</returns>
         public async System.Threading.Tasks.Task<ApiResponse<Object>> TestEndpointParametersAsyncWithHttpInfo (decimal? number, double? _double, string patternWithoutDelimiter, byte[] _byte, int? integer = null, int? int32 = null, long? int64 = null, float? _float = null, string _string = null, byte[] binary = null, DateTime? date = null, DateTime? dateTime = null, string password = null, string callback = null)
         {
+            log.Trace("TestEndpointParametersWithHttpInfo called");
             // verify the required parameter 'number' is set
             if (number == null)
                 throw new ApiException(400, "Missing required parameter 'number' when calling FakeApi->TestEndpointParameters");
@@ -1472,26 +1601,35 @@ namespace IO.Swagger.Api
             if (password != null) localVarFormParams.Add("password", Configuration.ApiClient.ParameterToString(password)); // form parameter
             if (callback != null) localVarFormParams.Add("callback", Configuration.ApiClient.ParameterToString(callback)); // form parameter
 
+            log.Debug("Headers, params and body created. Adding auth");
             // authentication (http_basic_test) required
             // http basic authentication required
             if (!String.IsNullOrEmpty(Configuration.Username) || !String.IsNullOrEmpty(Configuration.Password))
             {
+                log.Debug("Basic auth");
                 localVarHeaderParams["Authorization"] = "Basic " + ApiClient.Base64Encode(Configuration.Username + ":" + Configuration.Password);
             }
 
+            log.Trace("Calling API async");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("TestEndpointParameters", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
@@ -1512,7 +1650,9 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public void TestEnumParameters (List<string> enumFormStringArray = null, string enumFormString = null, List<string> enumHeaderStringArray = null, string enumHeaderString = null, List<string> enumQueryStringArray = null, string enumQueryString = null, int? enumQueryInteger = null, double? enumQueryDouble = null)
         {
-             TestEnumParametersWithHttpInfo(enumFormStringArray, enumFormString, enumHeaderStringArray, enumHeaderString, enumQueryStringArray, enumQueryString, enumQueryInteger, enumQueryDouble);
+            log.Trace("TestEnumParameters called");
+
+            TestEnumParametersWithHttpInfo(enumFormStringArray, enumFormString, enumHeaderStringArray, enumHeaderString, enumQueryStringArray, enumQueryString, enumQueryInteger, enumQueryDouble);
         }
 
         /// <summary>
@@ -1530,6 +1670,7 @@ namespace IO.Swagger.Api
         /// <returns>ApiResponse of Object(void)</returns>
         public ApiResponse<Object> TestEnumParametersWithHttpInfo (List<string> enumFormStringArray = null, string enumFormString = null, List<string> enumHeaderStringArray = null, string enumHeaderString = null, List<string> enumQueryStringArray = null, string enumQueryString = null, int? enumQueryInteger = null, double? enumQueryDouble = null)
         {
+            log.Trace("TestEnumParametersWithHttpInfo called");
 
             var localVarPath = "/fake";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1562,20 +1703,28 @@ namespace IO.Swagger.Api
             if (enumFormString != null) localVarFormParams.Add("enum_form_string", Configuration.ApiClient.ParameterToString(enumFormString)); // form parameter
             if (enumQueryDouble != null) localVarFormParams.Add("enum_query_double", Configuration.ApiClient.ParameterToString(enumQueryDouble)); // form parameter
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("TestEnumParameters", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
@@ -1596,7 +1745,8 @@ namespace IO.Swagger.Api
         /// <returns>Task of void</returns>
         public async System.Threading.Tasks.Task TestEnumParametersAsync (List<string> enumFormStringArray = null, string enumFormString = null, List<string> enumHeaderStringArray = null, string enumHeaderString = null, List<string> enumQueryStringArray = null, string enumQueryString = null, int? enumQueryInteger = null, double? enumQueryDouble = null)
         {
-             await TestEnumParametersAsyncWithHttpInfo(enumFormStringArray, enumFormString, enumHeaderStringArray, enumHeaderString, enumQueryStringArray, enumQueryString, enumQueryInteger, enumQueryDouble);
+            log.Trace("TestEnumParametersAsync called");
+            await TestEnumParametersAsyncWithHttpInfo(enumFormStringArray, enumFormString, enumHeaderStringArray, enumHeaderString, enumQueryStringArray, enumQueryString, enumQueryInteger, enumQueryDouble);
 
         }
 
@@ -1615,6 +1765,7 @@ namespace IO.Swagger.Api
         /// <returns>Task of ApiResponse</returns>
         public async System.Threading.Tasks.Task<ApiResponse<Object>> TestEnumParametersAsyncWithHttpInfo (List<string> enumFormStringArray = null, string enumFormString = null, List<string> enumHeaderStringArray = null, string enumHeaderString = null, List<string> enumQueryStringArray = null, string enumQueryString = null, int? enumQueryInteger = null, double? enumQueryDouble = null)
         {
+            log.Trace("TestEnumParametersWithHttpInfo called");
 
             var localVarPath = "/fake";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1647,20 +1798,28 @@ namespace IO.Swagger.Api
             if (enumFormString != null) localVarFormParams.Add("enum_form_string", Configuration.ApiClient.ParameterToString(enumFormString)); // form parameter
             if (enumQueryDouble != null) localVarFormParams.Add("enum_query_double", Configuration.ApiClient.ParameterToString(enumQueryDouble)); // form parameter
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API async");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("TestEnumParameters", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
@@ -1675,7 +1834,9 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public void TestJsonFormData (string param, string param2)
         {
-             TestJsonFormDataWithHttpInfo(param, param2);
+            log.Trace("TestJsonFormData called");
+
+            TestJsonFormDataWithHttpInfo(param, param2);
         }
 
         /// <summary>
@@ -1687,6 +1848,7 @@ namespace IO.Swagger.Api
         /// <returns>ApiResponse of Object(void)</returns>
         public ApiResponse<Object> TestJsonFormDataWithHttpInfo (string param, string param2)
         {
+            log.Trace("TestJsonFormDataWithHttpInfo called");
             // verify the required parameter 'param' is set
             if (param == null)
                 throw new ApiException(400, "Missing required parameter 'param' when calling FakeApi->TestJsonFormData");
@@ -1718,20 +1880,28 @@ namespace IO.Swagger.Api
             if (param != null) localVarFormParams.Add("param", Configuration.ApiClient.ParameterToString(param)); // form parameter
             if (param2 != null) localVarFormParams.Add("param2", Configuration.ApiClient.ParameterToString(param2)); // form parameter
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("TestJsonFormData", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
@@ -1746,7 +1916,8 @@ namespace IO.Swagger.Api
         /// <returns>Task of void</returns>
         public async System.Threading.Tasks.Task TestJsonFormDataAsync (string param, string param2)
         {
-             await TestJsonFormDataAsyncWithHttpInfo(param, param2);
+            log.Trace("TestJsonFormDataAsync called");
+            await TestJsonFormDataAsyncWithHttpInfo(param, param2);
 
         }
 
@@ -1759,6 +1930,7 @@ namespace IO.Swagger.Api
         /// <returns>Task of ApiResponse</returns>
         public async System.Threading.Tasks.Task<ApiResponse<Object>> TestJsonFormDataAsyncWithHttpInfo (string param, string param2)
         {
+            log.Trace("TestJsonFormDataWithHttpInfo called");
             // verify the required parameter 'param' is set
             if (param == null)
                 throw new ApiException(400, "Missing required parameter 'param' when calling FakeApi->TestJsonFormData");
@@ -1790,20 +1962,28 @@ namespace IO.Swagger.Api
             if (param != null) localVarFormParams.Add("param", Configuration.ApiClient.ParameterToString(param)); // form parameter
             if (param2 != null) localVarFormParams.Add("param2", Configuration.ApiClient.ParameterToString(param2)); // form parameter
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API async");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("TestJsonFormData", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);

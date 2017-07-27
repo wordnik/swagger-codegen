@@ -23,6 +23,7 @@ namespace IO.Swagger.Client
     /// </summary>
     public class Configuration : IReadableConfiguration
     {
+        private static IO.Swagger.Client.Logger log = new IO.Swagger.Client.Logger("Configuration");
         #region Constants
 
         /// <summary>
@@ -106,6 +107,7 @@ namespace IO.Swagger.Client
 
         static Configuration()
         {
+            log.Trace("Configuration ctor");
             _globalConfiguration = new GlobalConfiguration();
         }
 
@@ -114,7 +116,9 @@ namespace IO.Swagger.Client
         /// </summary>
         public Configuration()
         {
+            log.Trace("Configuration ctor");
             UserAgent = "Swagger-Codegen/1.0.0/csharp";
+            log.Debug(string.Format("UserAgent: {0}", UserAgent));
             BasePath = "http://petstore.swagger.io:80/v2";
             DefaultHeader = new ConcurrentDictionary<string, string>();
             ApiKey = new ConcurrentDictionary<string, string>();
@@ -133,6 +137,7 @@ namespace IO.Swagger.Client
             IDictionary<string, string> apiKeyPrefix,
             string basePath = "http://petstore.swagger.io:80/v2") : this()
         {
+            log.Trace("Configuration ctor");
             if (string.IsNullOrWhiteSpace(basePath))
                 throw new ArgumentException("The provided basePath is invalid.", "basePath");
             if (defaultHeader == null)
@@ -148,16 +153,19 @@ namespace IO.Swagger.Client
             {
                 DefaultHeader.Add(keyValuePair);
             }
+            log.Debug(string.Format("DefaultHeaders length: {0}", DefaultHeader.Count));
 
             foreach (var keyValuePair in apiKey)
             {
                 ApiKey.Add(keyValuePair);
             }
+            log.Debug(string.Format("ApiKey length: {0}", ApiKey.Count));
 
             foreach (var keyValuePair in apiKeyPrefix)
             {
                 ApiKeyPrefix.Add(keyValuePair);
             }
+            log.Debug(string.Format("ApiKeyPrefix length: {0}", ApiKeyPrefix.Count));
         }
 
         /// <summary>
@@ -409,6 +417,7 @@ namespace IO.Swagger.Client
         /// <returns></returns>
         public ApiClient CreateApiClient()
         {
+            log.Trace("Create Api Client");
             return new ApiClient(BasePath) { Configuration = this };
         }
 
@@ -435,6 +444,7 @@ namespace IO.Swagger.Client
         /// <returns></returns>
         public void AddApiKey(string key, string value)
         {
+            log.Trace("Add Api Key");
             ApiKey[key] = value;
         }
 
@@ -445,6 +455,7 @@ namespace IO.Swagger.Client
         /// <param name="value">Api Key value.</param>
         public void AddApiKeyPrefix(string key, string value)
         {
+            log.Trace("Add Api Key Prefix");
             ApiKeyPrefix[key] = value;
         }
 

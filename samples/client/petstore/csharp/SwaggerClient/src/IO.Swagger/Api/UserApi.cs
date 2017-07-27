@@ -374,6 +374,7 @@ namespace IO.Swagger.Api
     /// </summary>
     public partial class UserApi : IUserApi
     {
+        private static IO.Swagger.Client.Logger log = new IO.Swagger.Client.Logger("UserApi");
         private IO.Swagger.Client.ExceptionFactory _exceptionFactory = (name, response) => null;
 
         /// <summary>
@@ -382,6 +383,8 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public UserApi(String basePath)
         {
+            log.Trace("UserApi ctor with base path");
+            log.Debug(string.Format("Base API path: {0}", basePath));
             this.Configuration = new Configuration { BasePath = basePath };
 
             ExceptionFactory = IO.Swagger.Client.Configuration.DefaultExceptionFactory;
@@ -395,6 +398,7 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public UserApi(Configuration configuration = null)
         {
+            log.Trace("UserApi ctor with configuration object");
             if (configuration == null) // use the default one in Configuration
                 this.Configuration = Configuration.Default;
             else
@@ -437,6 +441,7 @@ namespace IO.Swagger.Api
             {
                 if (_exceptionFactory != null && _exceptionFactory.GetInvocationList().Length > 1)
                 {
+                    log.Error("Multicast delegate for ExceptionFactory is unsupported.");
                     throw new InvalidOperationException("Multicast delegate for ExceptionFactory is unsupported.");
                 }
                 return _exceptionFactory;
@@ -474,7 +479,9 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public void CreateUser (User body)
         {
-             CreateUserWithHttpInfo(body);
+            log.Trace("CreateUser called");
+
+            CreateUserWithHttpInfo(body);
         }
 
         /// <summary>
@@ -485,6 +492,7 @@ namespace IO.Swagger.Api
         /// <returns>ApiResponse of Object(void)</returns>
         public ApiResponse<Object> CreateUserWithHttpInfo (User body)
         {
+            log.Trace("CreateUserWithHttpInfo called");
             // verify the required parameter 'body' is set
             if (body == null)
                 throw new ApiException(400, "Missing required parameter 'body' when calling UserApi->CreateUser");
@@ -520,20 +528,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("CreateUser", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
@@ -547,7 +563,8 @@ namespace IO.Swagger.Api
         /// <returns>Task of void</returns>
         public async System.Threading.Tasks.Task CreateUserAsync (User body)
         {
-             await CreateUserAsyncWithHttpInfo(body);
+            log.Trace("CreateUserAsync called");
+            await CreateUserAsyncWithHttpInfo(body);
 
         }
 
@@ -559,6 +576,7 @@ namespace IO.Swagger.Api
         /// <returns>Task of ApiResponse</returns>
         public async System.Threading.Tasks.Task<ApiResponse<Object>> CreateUserAsyncWithHttpInfo (User body)
         {
+            log.Trace("CreateUserWithHttpInfo called");
             // verify the required parameter 'body' is set
             if (body == null)
                 throw new ApiException(400, "Missing required parameter 'body' when calling UserApi->CreateUser");
@@ -594,20 +612,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API async");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("CreateUser", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
@@ -621,7 +647,9 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public void CreateUsersWithArrayInput (List<User> body)
         {
-             CreateUsersWithArrayInputWithHttpInfo(body);
+            log.Trace("CreateUsersWithArrayInput called");
+
+            CreateUsersWithArrayInputWithHttpInfo(body);
         }
 
         /// <summary>
@@ -632,6 +660,7 @@ namespace IO.Swagger.Api
         /// <returns>ApiResponse of Object(void)</returns>
         public ApiResponse<Object> CreateUsersWithArrayInputWithHttpInfo (List<User> body)
         {
+            log.Trace("CreateUsersWithArrayInputWithHttpInfo called");
             // verify the required parameter 'body' is set
             if (body == null)
                 throw new ApiException(400, "Missing required parameter 'body' when calling UserApi->CreateUsersWithArrayInput");
@@ -667,20 +696,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("CreateUsersWithArrayInput", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
@@ -694,7 +731,8 @@ namespace IO.Swagger.Api
         /// <returns>Task of void</returns>
         public async System.Threading.Tasks.Task CreateUsersWithArrayInputAsync (List<User> body)
         {
-             await CreateUsersWithArrayInputAsyncWithHttpInfo(body);
+            log.Trace("CreateUsersWithArrayInputAsync called");
+            await CreateUsersWithArrayInputAsyncWithHttpInfo(body);
 
         }
 
@@ -706,6 +744,7 @@ namespace IO.Swagger.Api
         /// <returns>Task of ApiResponse</returns>
         public async System.Threading.Tasks.Task<ApiResponse<Object>> CreateUsersWithArrayInputAsyncWithHttpInfo (List<User> body)
         {
+            log.Trace("CreateUsersWithArrayInputWithHttpInfo called");
             // verify the required parameter 'body' is set
             if (body == null)
                 throw new ApiException(400, "Missing required parameter 'body' when calling UserApi->CreateUsersWithArrayInput");
@@ -741,20 +780,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API async");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("CreateUsersWithArrayInput", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
@@ -768,7 +815,9 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public void CreateUsersWithListInput (List<User> body)
         {
-             CreateUsersWithListInputWithHttpInfo(body);
+            log.Trace("CreateUsersWithListInput called");
+
+            CreateUsersWithListInputWithHttpInfo(body);
         }
 
         /// <summary>
@@ -779,6 +828,7 @@ namespace IO.Swagger.Api
         /// <returns>ApiResponse of Object(void)</returns>
         public ApiResponse<Object> CreateUsersWithListInputWithHttpInfo (List<User> body)
         {
+            log.Trace("CreateUsersWithListInputWithHttpInfo called");
             // verify the required parameter 'body' is set
             if (body == null)
                 throw new ApiException(400, "Missing required parameter 'body' when calling UserApi->CreateUsersWithListInput");
@@ -814,20 +864,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("CreateUsersWithListInput", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
@@ -841,7 +899,8 @@ namespace IO.Swagger.Api
         /// <returns>Task of void</returns>
         public async System.Threading.Tasks.Task CreateUsersWithListInputAsync (List<User> body)
         {
-             await CreateUsersWithListInputAsyncWithHttpInfo(body);
+            log.Trace("CreateUsersWithListInputAsync called");
+            await CreateUsersWithListInputAsyncWithHttpInfo(body);
 
         }
 
@@ -853,6 +912,7 @@ namespace IO.Swagger.Api
         /// <returns>Task of ApiResponse</returns>
         public async System.Threading.Tasks.Task<ApiResponse<Object>> CreateUsersWithListInputAsyncWithHttpInfo (List<User> body)
         {
+            log.Trace("CreateUsersWithListInputWithHttpInfo called");
             // verify the required parameter 'body' is set
             if (body == null)
                 throw new ApiException(400, "Missing required parameter 'body' when calling UserApi->CreateUsersWithListInput");
@@ -888,20 +948,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API async");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("CreateUsersWithListInput", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
@@ -915,7 +983,9 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public void DeleteUser (string username)
         {
-             DeleteUserWithHttpInfo(username);
+            log.Trace("DeleteUser called");
+
+            DeleteUserWithHttpInfo(username);
         }
 
         /// <summary>
@@ -926,6 +996,7 @@ namespace IO.Swagger.Api
         /// <returns>ApiResponse of Object(void)</returns>
         public ApiResponse<Object> DeleteUserWithHttpInfo (string username)
         {
+            log.Trace("DeleteUserWithHttpInfo called");
             // verify the required parameter 'username' is set
             if (username == null)
                 throw new ApiException(400, "Missing required parameter 'username' when calling UserApi->DeleteUser");
@@ -954,20 +1025,28 @@ namespace IO.Swagger.Api
 
             if (username != null) localVarPathParams.Add("username", Configuration.ApiClient.ParameterToString(username)); // path parameter
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath,
                 Method.DELETE, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("DeleteUser", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
@@ -981,7 +1060,8 @@ namespace IO.Swagger.Api
         /// <returns>Task of void</returns>
         public async System.Threading.Tasks.Task DeleteUserAsync (string username)
         {
-             await DeleteUserAsyncWithHttpInfo(username);
+            log.Trace("DeleteUserAsync called");
+            await DeleteUserAsyncWithHttpInfo(username);
 
         }
 
@@ -993,6 +1073,7 @@ namespace IO.Swagger.Api
         /// <returns>Task of ApiResponse</returns>
         public async System.Threading.Tasks.Task<ApiResponse<Object>> DeleteUserAsyncWithHttpInfo (string username)
         {
+            log.Trace("DeleteUserWithHttpInfo called");
             // verify the required parameter 'username' is set
             if (username == null)
                 throw new ApiException(400, "Missing required parameter 'username' when calling UserApi->DeleteUser");
@@ -1021,20 +1102,28 @@ namespace IO.Swagger.Api
 
             if (username != null) localVarPathParams.Add("username", Configuration.ApiClient.ParameterToString(username)); // path parameter
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API async");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.DELETE, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("DeleteUser", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
@@ -1048,9 +1137,11 @@ namespace IO.Swagger.Api
         /// <returns>User</returns>
         public User GetUserByName (string username)
         {
-             ApiResponse<User> localVarResponse = GetUserByNameWithHttpInfo(username);
-             return localVarResponse.Data;
-        }
+            log.Trace("GetUserByName called");
+            ApiResponse<User> localVarResponse = GetUserByNameWithHttpInfo(username);
+            log.Trace("return GetUserByName response data");
+            return localVarResponse.Data;
+                    }
 
         /// <summary>
         /// Get user by user name 
@@ -1060,6 +1151,7 @@ namespace IO.Swagger.Api
         /// <returns>ApiResponse of User</returns>
         public ApiResponse< User > GetUserByNameWithHttpInfo (string username)
         {
+            log.Trace("GetUserByNameWithHttpInfo called");
             // verify the required parameter 'username' is set
             if (username == null)
                 throw new ApiException(400, "Missing required parameter 'username' when calling UserApi->GetUserByName");
@@ -1088,20 +1180,28 @@ namespace IO.Swagger.Api
 
             if (username != null) localVarPathParams.Add("username", Configuration.ApiClient.ParameterToString(username)); // path parameter
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("GetUserByName", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return response of type User");
             return new ApiResponse<User>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 (User) Configuration.ApiClient.Deserialize(localVarResponse, typeof(User)));
@@ -1115,8 +1215,10 @@ namespace IO.Swagger.Api
         /// <returns>Task of User</returns>
         public async System.Threading.Tasks.Task<User> GetUserByNameAsync (string username)
         {
-             ApiResponse<User> localVarResponse = await GetUserByNameAsyncWithHttpInfo(username);
-             return localVarResponse.Data;
+            log.Trace("GetUserByNameAsync called");
+            ApiResponse<User> localVarResponse = await GetUserByNameAsyncWithHttpInfo(username);
+            log.Trace("return GetUserByNameAsync response data");
+            return localVarResponse.Data;
 
         }
 
@@ -1128,6 +1230,7 @@ namespace IO.Swagger.Api
         /// <returns>Task of ApiResponse (User)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<User>> GetUserByNameAsyncWithHttpInfo (string username)
         {
+            log.Trace("GetUserByNameWithHttpInfo called");
             // verify the required parameter 'username' is set
             if (username == null)
                 throw new ApiException(400, "Missing required parameter 'username' when calling UserApi->GetUserByName");
@@ -1156,20 +1259,28 @@ namespace IO.Swagger.Api
 
             if (username != null) localVarPathParams.Add("username", Configuration.ApiClient.ParameterToString(username)); // path parameter
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API async");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("GetUserByName", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return response of type User");
             return new ApiResponse<User>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 (User) Configuration.ApiClient.Deserialize(localVarResponse, typeof(User)));
@@ -1184,9 +1295,11 @@ namespace IO.Swagger.Api
         /// <returns>string</returns>
         public string LoginUser (string username, string password)
         {
-             ApiResponse<string> localVarResponse = LoginUserWithHttpInfo(username, password);
-             return localVarResponse.Data;
-        }
+            log.Trace("LoginUser called");
+            ApiResponse<string> localVarResponse = LoginUserWithHttpInfo(username, password);
+            log.Trace("return LoginUser response data");
+            return localVarResponse.Data;
+                    }
 
         /// <summary>
         /// Logs user into the system 
@@ -1197,6 +1310,7 @@ namespace IO.Swagger.Api
         /// <returns>ApiResponse of string</returns>
         public ApiResponse< string > LoginUserWithHttpInfo (string username, string password)
         {
+            log.Trace("LoginUserWithHttpInfo called");
             // verify the required parameter 'username' is set
             if (username == null)
                 throw new ApiException(400, "Missing required parameter 'username' when calling UserApi->LoginUser");
@@ -1229,20 +1343,28 @@ namespace IO.Swagger.Api
             if (username != null) localVarQueryParams.AddRange(Configuration.ApiClient.ParameterToKeyValuePairs("", "username", username)); // query parameter
             if (password != null) localVarQueryParams.AddRange(Configuration.ApiClient.ParameterToKeyValuePairs("", "password", password)); // query parameter
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("LoginUser", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return response of type string");
             return new ApiResponse<string>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 (string) Configuration.ApiClient.Deserialize(localVarResponse, typeof(string)));
@@ -1257,8 +1379,10 @@ namespace IO.Swagger.Api
         /// <returns>Task of string</returns>
         public async System.Threading.Tasks.Task<string> LoginUserAsync (string username, string password)
         {
-             ApiResponse<string> localVarResponse = await LoginUserAsyncWithHttpInfo(username, password);
-             return localVarResponse.Data;
+            log.Trace("LoginUserAsync called");
+            ApiResponse<string> localVarResponse = await LoginUserAsyncWithHttpInfo(username, password);
+            log.Trace("return LoginUserAsync response data");
+            return localVarResponse.Data;
 
         }
 
@@ -1271,6 +1395,7 @@ namespace IO.Swagger.Api
         /// <returns>Task of ApiResponse (string)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<string>> LoginUserAsyncWithHttpInfo (string username, string password)
         {
+            log.Trace("LoginUserWithHttpInfo called");
             // verify the required parameter 'username' is set
             if (username == null)
                 throw new ApiException(400, "Missing required parameter 'username' when calling UserApi->LoginUser");
@@ -1303,20 +1428,28 @@ namespace IO.Swagger.Api
             if (username != null) localVarQueryParams.AddRange(Configuration.ApiClient.ParameterToKeyValuePairs("", "username", username)); // query parameter
             if (password != null) localVarQueryParams.AddRange(Configuration.ApiClient.ParameterToKeyValuePairs("", "password", password)); // query parameter
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API async");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("LoginUser", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return response of type string");
             return new ApiResponse<string>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 (string) Configuration.ApiClient.Deserialize(localVarResponse, typeof(string)));
@@ -1329,7 +1462,9 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public void LogoutUser ()
         {
-             LogoutUserWithHttpInfo();
+            log.Trace("LogoutUser called");
+
+            LogoutUserWithHttpInfo();
         }
 
         /// <summary>
@@ -1339,6 +1474,7 @@ namespace IO.Swagger.Api
         /// <returns>ApiResponse of Object(void)</returns>
         public ApiResponse<Object> LogoutUserWithHttpInfo ()
         {
+            log.Trace("LogoutUserWithHttpInfo called");
 
             var localVarPath = "/user/logout";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1363,20 +1499,28 @@ namespace IO.Swagger.Api
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("LogoutUser", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
@@ -1389,7 +1533,8 @@ namespace IO.Swagger.Api
         /// <returns>Task of void</returns>
         public async System.Threading.Tasks.Task LogoutUserAsync ()
         {
-             await LogoutUserAsyncWithHttpInfo();
+            log.Trace("LogoutUserAsync called");
+            await LogoutUserAsyncWithHttpInfo();
 
         }
 
@@ -1400,6 +1545,7 @@ namespace IO.Swagger.Api
         /// <returns>Task of ApiResponse</returns>
         public async System.Threading.Tasks.Task<ApiResponse<Object>> LogoutUserAsyncWithHttpInfo ()
         {
+            log.Trace("LogoutUserWithHttpInfo called");
 
             var localVarPath = "/user/logout";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1424,20 +1570,28 @@ namespace IO.Swagger.Api
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API async");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("LogoutUser", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
@@ -1452,7 +1606,9 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public void UpdateUser (string username, User body)
         {
-             UpdateUserWithHttpInfo(username, body);
+            log.Trace("UpdateUser called");
+
+            UpdateUserWithHttpInfo(username, body);
         }
 
         /// <summary>
@@ -1464,6 +1620,7 @@ namespace IO.Swagger.Api
         /// <returns>ApiResponse of Object(void)</returns>
         public ApiResponse<Object> UpdateUserWithHttpInfo (string username, User body)
         {
+            log.Trace("UpdateUserWithHttpInfo called");
             // verify the required parameter 'username' is set
             if (username == null)
                 throw new ApiException(400, "Missing required parameter 'username' when calling UserApi->UpdateUser");
@@ -1503,20 +1660,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath,
                 Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("UpdateUser", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
@@ -1531,7 +1696,8 @@ namespace IO.Swagger.Api
         /// <returns>Task of void</returns>
         public async System.Threading.Tasks.Task UpdateUserAsync (string username, User body)
         {
-             await UpdateUserAsyncWithHttpInfo(username, body);
+            log.Trace("UpdateUserAsync called");
+            await UpdateUserAsyncWithHttpInfo(username, body);
 
         }
 
@@ -1544,6 +1710,7 @@ namespace IO.Swagger.Api
         /// <returns>Task of ApiResponse</returns>
         public async System.Threading.Tasks.Task<ApiResponse<Object>> UpdateUserAsyncWithHttpInfo (string username, User body)
         {
+            log.Trace("UpdateUserWithHttpInfo called");
             // verify the required parameter 'username' is set
             if (username == null)
                 throw new ApiException(400, "Missing required parameter 'username' when calling UserApi->UpdateUser");
@@ -1583,20 +1750,28 @@ namespace IO.Swagger.Api
                 localVarPostBody = body; // byte array
             }
 
+            log.Debug("Headers, params and body created. Adding auth");
 
+            log.Trace("Calling API async");
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
+            log.Info(string.Format("Received response with code {0}",localVarStatusCode));
 
             if (ExceptionFactory != null)
             {
                 Exception exception = ExceptionFactory("UpdateUser", localVarResponse);
-                if (exception != null) throw exception;
+                if (exception != null)
+                {
+                    log.Warn("Exception from API is not null");
+                    throw exception;
+                }
             }
 
+            log.Trace("return null-filled response");
             return new ApiResponse<Object>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
                 null);
